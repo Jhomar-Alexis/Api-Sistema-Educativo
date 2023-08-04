@@ -1,0 +1,111 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+// conectar base de datos 
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+// clear tablas de la base de datos
+model User {
+    id                 Int           @id @default(autoincrement()) @db.UnsignedInt
+    username           String        @db.VarChar(255)
+    email              String        @unique @db.VarChar(255)
+    provider           String        @default("local") @db.VarChar(255)
+    password           String        @db.VarChar(255)
+    resetPasswordToken String        @map("reset_password_token") @db.VarChar(255)
+    blocked            Boolean?      @default(false)
+    roleId             Int           @map("role_id") @db.UnsignedInt
+    createdAt          DateTime?     @default(now()) @map("created_at")
+    updatedAt          DateTime?     @updatedAt @map("updated_at")
+    Role               Role          @relation(fields: [roleId], references: [id])
+    School_Levels      School_Level? @relation(fields: [school_levelsId], references: [id])
+    school_levelsId    Int?          @map("school_levels_id") @db.UnsignedInt
+
+    @@map("Usuarios")
+}
+
+model Role {
+    id        Int       @id @default(autoincrement()) @db.UnsignedInt
+    name      String    @unique @db.VarChar(255)
+    type      String    @db.VarChar(255)
+    createdAt DateTime? @default(now()) @map("created_at")
+    users     User[]
+
+    @@map("Roles")
+}
+
+model School_Level {
+    id     Int     @id @default(autoincrement()) @db.UnsignedInt
+    name   String  @unique @db.VarChar(255)
+    users  User[]
+    Grades Grade[]
+
+    gradeId Int? @db.UnsignedInt
+
+    @@map("Nivel Escolar")
+}
+
+model Grade {
+    id             Int           @id @default(autoincrement()) @db.UnsignedInt
+    name           String        @db.VarChar(255)
+    Sections       Section[]
+    School_Level   School_Level? @relation(fields: [school_LevelId], references: [id])
+    school_LevelId Int?          @map("school_Level_id") @db.UnsignedInt
+
+    @@map("Grados")
+}
+
+model Section {
+    id      Int       @id @default(autoincrement()) @db.UnsignedInt
+    name    String    @db.VarChar(255)
+    Student Student[]
+    Grade   Grade?    @relation(fields: [gradeId], references: [id])
+    gradeId Int?      @db.UnsignedInt
+
+    @@map("Secciones")
+}
+
+model Student {
+    id            Int            @id @default(autoincrement()) @db.UnsignedInt
+    fullName      String         @db.VarChar(255)
+    DNI           Int
+    studentCode   Int
+    gradeId       Int            @map("grade_id") @db.UnsignedInt
+    Section       Section?       @relation(fields: [sectionId], references: [id])
+    sectionId     Int?           @map("section_id") @db.UnsignedInt
+    createdAt     DateTime?      @default(now()) @map("created_at")
+    updatedAt     DateTime?      @updatedAt @map("updated_at")
+    Schools_Notes School_notes[]
+    Courses       Course[]
+
+    @@map("Estudiantes")
+}
+
+model Course {
+    id            Int            @id @default(autoincrement()) @db.UnsignedInt
+    name          String         @db.VarChar(255)
+    Competence_1  String?        @db.VarChar(255)
+    Competence_2  String?        @db.VarChar(255)
+    Schools_Notes School_notes[]
+    Student       Student?       @relation(fields: [studentId], references: [id])
+    studentId     Int?           @db.UnsignedInt
+
+    @@map("Cursos")
+}
+
+model School_notes {
+    id         Int      @id @default(autoincrement()) @db.UnsignedInt
+    note_1     String   @db.VarChar(255)
+    note_2     String   @db.VarChar(255)
+    note_3     String   @db.VarChar(255)
+    Final_Note String   @db.VarChar(255)
+    Course     Course?  @relation(fields: [courseId], references: [id])
+    courseId   Int?     @map("courses_id") @db.UnsignedInt
+    Student    Student? @relation(fields: [studentId], references: [id])
+    studentId  Int?     @map("students_id") @db.UnsignedInt
+
+    @@map("Notas Escolares")
+}

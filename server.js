@@ -36,7 +36,7 @@ app.addHook("onClose", async (instance, done) => {
 });
 
 // Start listening.
-//levantamos el servidor.
+// levantamos el servidor.
 app.listen({ port: process.env.PORT || 3000 }, (err) => {
   if (err) {
     app.log.error(err);
@@ -45,7 +45,7 @@ app.listen({ port: process.env.PORT || 3000 }, (err) => {
 });
 
 // Este código configura y ejecuta un servidor web utilizando el framework Fastify.
-//Primero, carga las variables de entorno desde un archivo .env, luego crea una
+// Primero, carga las variables de entorno desde un archivo .env, luego crea una
 // instancia de Fastify y registra un módulo llamado appService que define las rutas
 // y controladores de la aplicación. Finalmente, inicia el servidor Fastify para
 // escuchar en el puerto especificado o en el puerto 3000 de forma predeterminada.

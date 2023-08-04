@@ -71,8 +71,8 @@ export default async function (fastify, opts) {
   });
 }
 
-//este archivo configura y registra diferentes complementos y rutas en la instancia de Fastify,
-//lo que permite crear un servidor web con características como comunicación con una base de
-//datos MySQL, manejo de sobrecarga de recursos, configuración de cabeceras CORS y cabeceras de
-//seguridad HTTP, y servir archivos estáticos. Además, utiliza el complemento AutoLoad para cargar
-//automáticamente plugins y rutas definidos en las carpetas plugins y routes, respectivamente.
+// este archivo configura y registra diferentes complementos y rutas en la instancia de Fastify,
+// lo que permite crear un servidor web con características como comunicación con una base de
+// datos MySQL, manejo de sobrecarga de recursos, configuración de cabeceras CORS y cabeceras de
+// seguridad HTTP, y servir archivos estáticos. Además, utiliza el complemento AutoLoad para cargar
+// automáticamente plugins y rutas definidos en las carpetas plugins y routes, respectivamente.
